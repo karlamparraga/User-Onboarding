@@ -14,7 +14,29 @@ function UserForm() {
                     name="name"
                     placeholder="Name"
                 />
+                <Field
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                />
+                <Field
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                />
+                <label className="checkbox-container">
+                    Terms of Servive
+                    <Field
+                        type="checkbox"
+                        name="terms"
+                        checked="false"
+                    />
+                    <span className="checkmark" />
+                 </label>
             </Form>
+            
+
+            <button>Submit</button>
         </div>
         
     )
