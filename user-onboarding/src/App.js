@@ -1,13 +1,9 @@
 import React from 'react';
-import Form from './components/Form.js'
-
-import './App.css';
+import UserForm from './components/UserForm';
 
 function App() {
   return (
-    <h1>
-      <Form />
-    </h1>
+      <UserForm />
   );
 }
 
