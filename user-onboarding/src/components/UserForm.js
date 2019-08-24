@@ -4,7 +4,19 @@ import * as Yup from "yup";
 import axios from "axios";
 import styles from "../styles.css"
 
-function UserForm({errors, touched, values}) {
+function UserForm ({errors, touched, values, status}) {
+
+    const [users, setUsers] = useState([]);
+    console.log("Users: ", users);
+
+    useEffect(() => {
+        if (status){
+            console.log("useEffect: Users: ", users);
+            setUsers([...users, status]);
+            console.log("useEffect: Users after: ", users);
+        }
+    }, [status]);
+
     return(
         <div className="user-form">
             <Form>
@@ -30,11 +42,11 @@ function UserForm({errors, touched, values}) {
                     name="password"
                     placeholder="Password"
                 />
-                 {touched.password && errors.password && (
+                 {/* {touched.password && errors.password && (
                     <p className="error">{errors.password}</p>
-                )}
+                )} */}
                 <label className="checkbox-container">
-                    Terms of Servive
+                    Terms of Service
                     <Field
                         type="checkbox"
                         name="terms"
@@ -42,14 +54,15 @@ function UserForm({errors, touched, values}) {
                     />
                     <span className="checkmark" />
                  </label>
+                 <button>Submit</button>
             </Form>
-            
-
-            <button>Submit</button>
+            {users.map(user => (
+                <p key={user.id}>{user.name}</p>
+            ))}
         </div>
         
     )
-}
+};
 
 const formikHOC = withFormik({
     mapPropsToValues({ name, email, password, terms }) {
@@ -68,13 +81,18 @@ const formikHOC = withFormik({
       /*the configuration object above (inside withFormik) will look for 
         a handleSubmit function and pass values
       */
-      handleSubmit(values){
+      handleSubmit(values, {setStatus, resetForm}){
           axios
           .post('https://reqres.in/api/users', values)
-          .then(res => console.log("handleSubmit: then: res: ", res))
+          .then(res => {
+                console.log("handleSubmit: then: res: ", res);
+                setStatus(res.data);
+                resetForm()
+            })
           .catch(err => console.log("handleSubmit: catch: err: ", err))
       }
 });
+
 const UserFormWithFormik = formikHOC(UserForm)
 
 export default UserFormWithFormik;
